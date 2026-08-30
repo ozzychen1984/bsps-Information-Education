@@ -1,200 +1,381 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>寶桑國小資訊成果上傳系統</title>
-    <style>
-      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(to bottom, #E6DEE9, #BDC2E8); min-height: 100vh; margin: 0; padding: 20px; color: #333; }
-      .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-      h2 { text-align: center; color: #7579B0; margin-bottom: 30px; }
-      .section-box { border: 1px solid #D3CEDB; padding: 20px; border-radius: 8px; margin-bottom: 25px; background-color: #FCFAFF; }
-      .section-box h3 { margin-top: 0; color: #5B5A7A; border-bottom: 2px solid #D3CEDB; padding-bottom: 10px; }
-      .form-group { margin-bottom: 15px; }
-      label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
-      input[type="text"], input[type="file"], textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #C4C0D0; border-radius: 6px; font-family: inherit; transition: all 0.3s ease; }
-      input[type="text"]:focus, input[type="file"]:focus, textarea:focus { outline: none; border-color: #7579B0; box-shadow: 0 0 0 3px rgba(117, 121, 176, 0.15); }
-      textarea { resize: vertical; }
-      .checkbox-group { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 6px; border: 1px solid #C4C0D0; }
-      .checkbox-item { display: flex; align-items: flex-start; }
-      .checkbox-item input[type="checkbox"] { margin-top: 4px; margin-right: 10px; accent-color: #7579B0; }
-      .checkbox-item label { font-weight: normal; margin-bottom: 0; cursor: pointer; }
-      button { width: 100%; padding: 14px; background-color: #7579B0; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 10px; }
-      button:hover { background-color: #5A5D8A; }
-      button:disabled { background-color: #B0B3CD; cursor: not-allowed; }
-      #status { margin-top: 20px; font-weight: bold; text-align: center; font-size: 16px; padding: 10px; border-radius: 6px; }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>寶桑國小資訊成果資料上傳系統</h2>
-      <form id="uploadForm">
-        
-        <div class="section-box">
-          <h3>基本資料</h3>
-          <div class="form-group"><label for="className">班級：</label><input type="text" id="className" placeholder="例如：一年甲班" required></div>
-          <div class="form-group"><label for="userName">姓名：</label><input type="text" id="userName" placeholder="請輸入您的姓名" required></div>
-        </div>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>資訊成果上傳系統</title>
+  <style>
+    /* 全局設定與字體 */
+    @import url('[https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap)');
+    
+    * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; }
+    body {
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #E6DEE9, #BDC2E8); 
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    }
+    .nav-tabs { display: flex; gap: 10px; margin-top: 30px; margin-bottom: 20px; }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.6); border: 1px solid #fff; padding: 10px 25px;
+      border-radius: 20px; cursor: pointer; font-size: 16px; font-weight: bold;
+      color: #555; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s ease;
+    }
+    .tab-btn.active { background: #fff; color: #6C5B7B; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .container {
+      background: #ffffff; width: 90%; max-width: 800px; padding: 40px; border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 50px; display: none;
+    }
+    .container.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    h2 { color: #4A4A4A; border-bottom: 2px solid #E6DEE9; padding-bottom: 10px; margin-top: 0; margin-bottom: 25px; }
+    
+    /* 表單風格 */
+    .form-row { display: flex; gap: 20px; margin-bottom: 25px; }
+    .form-group { flex: 1; margin-bottom: 0; }
+    .form-group-full { margin-bottom: 25px; }
+    label { display: block; font-weight: 500; margin-bottom: 8px; color: #333; }
+    input[type="text"], input[type="password"], select, textarea, input[type="file"] {
+      width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; 
+      font-size: 15px; outline: none; transition: border-color 0.3s, box-shadow 0.3s; background: #FAFAFA;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+      border-color: #BDC2E8; box-shadow: 0 0 8px rgba(189, 194, 232, 0.6); background: #fff;
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    .photo-section {
+      background: #F8F9FA; border: 1px solid #E2E8F0; padding: 25px; border-radius: 12px; margin-bottom: 30px;
+    }
+    .photo-section h3 { margin-top: 0; color: #5C677D; font-size: 18px; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 20px; }
+    .radio-group { display: flex; flex-direction: column; gap: 12px; background: #fff; border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
+    .radio-label { display: flex; align-items: center; font-weight: 400; cursor: pointer; color: #4A4A4A; font-size: 15px; }
+    .radio-label input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+    .btn-submit {
+      width: 100%; background: linear-gradient(135deg, #9C9ED9, #BCA4C4); color: white; border: none; padding: 15px;
+      font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+    @media (max-width: 600px) { .form-row { flex-direction: column; gap: 15px; } }
 
-        <div class="section-box">
-          <h3>第 1 張照片</h3>
-          <div class="form-group"><label for="photo1">選擇照片：</label><input type="file" id="photo1" accept="image/*" required></div>
-          <div class="form-group"><label for="description1">照片說明：</label><textarea id="description1" rows="3" placeholder="教學年級、領域、單元、應用說明..." required></textarea></div>
-          <div class="form-group">
-            <label>應用類別：</label>
-            <div class="checkbox-group">
-              <div class="checkbox-item"><input type="checkbox" id="cb1_1" name="checkbox1" value="輔助教材呈現"><label for="cb1_1">輔助教材呈現</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_2" name="checkbox1" value="紀錄學生學習歷程"><label for="cb1_2">紀錄學生學習歷程</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_3" name="checkbox1" value="促進討論或溝通"><label for="cb1_3">促進討論或溝通</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_4" name="checkbox1" value="提供適當的練習"><label for="cb1_4">提供適當的練習</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_5" name="checkbox1" value="利用資訊搜尋(提問)與彙整"><label for="cb1_5">利用資訊搜尋(提問)與彙整</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_6" name="checkbox1" value="協助學習任務(作品)創作與分享"><label for="cb1_6">協助學習任務(作品)創作與分享</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb1_7" name="checkbox1" value="評量後數據利用(學習回饋)"><label for="cb1_7">評量後數據利用(學習回饋)</label></div>
-            </div>
-          </div>
-        </div>
+    /* 後台與 Modal */
+    #adminAuthView { text-align: center; padding: 40px 20px; }
+    #adminDataView { display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #F3EEF5; color: #555; font-weight: 600; }
+    tr:hover { background: #FAFAFA; }
+    .doc-link { color: #6C5B7B; text-decoration: none; font-weight: 500; background: #F0EAF2; padding: 6px 12px; border-radius: 6px; transition: background 0.3s; }
+    .doc-link:hover { background: #E6DEE9; }
 
-        <div class="section-box">
-          <h3>第 2 張照片</h3>
-          <div class="form-group"><label for="photo2">選擇照片：</label><input type="file" id="photo2" accept="image/*" required></div>
-          <div class="form-group"><label for="description2">照片說明：</label><textarea id="description2" rows="3" placeholder="教學年級、領域、單元、應用說明..." required></textarea></div>
-          <div class="form-group">
-            <label>應用類別：</label>
-            <div class="checkbox-group">
-              <div class="checkbox-item"><input type="checkbox" id="cb2_1" name="checkbox2" value="輔助教材呈現"><label for="cb2_1">輔助教材呈現</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_2" name="checkbox2" value="紀錄學生學習歷程"><label for="cb2_2">紀錄學生學習歷程</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_3" name="checkbox2" value="促進討論或溝通"><label for="cb2_3">促進討論或溝通</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_4" name="checkbox2" value="提供適當的練習"><label for="cb2_4">提供適當的練習</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_5" name="checkbox2" value="利用資訊搜尋(提問)與彙整"><label for="cb2_5">利用資訊搜尋(提問)與彙整</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_6" name="checkbox2" value="協助學習任務(作品)創作與分享"><label for="cb2_6">協助學習任務(作品)創作與分享</label></div>
-              <div class="checkbox-item"><input type="checkbox" id="cb2_7" name="checkbox2" value="評量後數據利用(學習回饋)"><label for="cb2_7">評量後數據利用(學習回饋)</label></div>
-            </div>
-          </div>
-        </div>
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+      z-index: 9999; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.show { visibility: visible; opacity: 1; }
+    .modal-box {
+      background: #fff; width: 90%; max-width: 400px; padding: 30px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      text-align: center; transform: scale(0.8); transition: transform 0.3s ease;
+    }
+    .modal-overlay.show .modal-box { transform: scale(1); }
+    .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333; }
+    .modal-message { font-size: 15px; color: #666; margin-bottom: 25px; line-height: 1.5; }
+    .modal-btn { background: #6C5B7B; color: white; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    .modal-btn:hover { background: #5a4b67; }
+    .modal-title.error { color: #D32F2F; }
+    .modal-title.success { color: #388E3C; }
 
-        <button type="button" id="submitBtn" onclick="submitForm()">確認上傳</button>
-      </form>
-      <div id="status"></div>
+    #loadingOverlay {
+      position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.8); z-index: 9998;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: 0.3s;
+    }
+    #loadingOverlay.show { visibility: visible; opacity: 1; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #9C9ED9; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- 切換標籤 -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('upload')">上傳成果</button>
+    <button class="tab-btn" onclick="switchTab('admin')">管理後台</button>
+  </div>
+
+  <!-- 上傳成果區域 -->
+  <div id="uploadView" class="container active">
+    <h2>資訊教學成果上傳</h2>
+    <div class="form-row">
+        <div class="form-group">
+          <label>姓名：</label>
+          <input type="text" id="studentName" placeholder="請輸入姓名">
+        </div>
+        <div class="form-group">
+          <label>班級：</label>
+          <select id="className">
+            <option value="">請選擇班級</option>
+            <option value="一年甲班">一年甲班</option><option value="一年乙班">一年乙班</option>
+            <option value="二年甲班">二年甲班</option><option value="二年乙班">二年乙班</option>
+            <option value="三年甲班">三年甲班</option><option value="三年乙班">三年乙班</option>
+            <option value="四年甲班">四年甲班</option><option value="四年乙班">四年乙班</option>
+            <option value="五年甲班">五年甲班</option><option value="五年乙班">五年乙班</option>
+            <option value="六年甲班">六年甲班</option><option value="六年乙班">六年乙班</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
     </div>
 
-    <script>
-      let API_URL = "";
+    <!-- 照片 1 -->
+    <div class="photo-section">
+      <h3>第 1 張照片</h3>
+      <div class="form-group-full"><label>選擇照片：</label><input type="file" id="file1" accept="image/*"></div>
+      <div class="form-group-full"><label>照片說明：</label><textarea id="desc1" placeholder="請輸入說明..."></textarea></div>
+      <div class="form-group-full" style="margin-bottom:0;">
+        <label>「數位科技輔助教學活動」應用類別：</label>
+        <div class="radio-group" id="radioGroup1"></div>
+      </div>
+    </div>
 
-      // 載入 API 網址
-      document.addEventListener("DOMContentLoaded", async () => {
-        try {
-          const res = await fetch('config.json');
-          const config = await res.json();
-          API_URL = config.apiUrl;
-        } catch (err) {
-          const statusDiv = document.getElementById('status');
-          statusDiv.innerText = '系統設定檔載入失敗，無法取得 API 網址。';
-          statusDiv.style.backgroundColor = '#fce8e6'; statusDiv.style.color = '#d93025';
-        }
+    <!-- 照片 2 -->
+    <div class="photo-section">
+      <h3>第 2 張照片</h3>
+      <div class="form-group-full"><label>選擇照片：</label><input type="file" id="file2" accept="image/*"></div>
+      <div class="form-group-full"><label>照片說明：</label><textarea id="desc2" placeholder="請輸入說明..."></textarea></div>
+      <div class="form-group-full" style="margin-bottom:0;">
+        <label>「數位科技輔助教學活動」應用類別：</label>
+        <div class="radio-group" id="radioGroup2"></div>
+      </div>
+    </div>
+
+    <button id="submitBtn" class="btn-submit" onclick="submitForm()">上傳資料</button>
+  </div>
+
+  <!-- 管理後台區域 -->
+  <div id="adminView" class="container">
+    <h2>管理後台</h2>
+    <div id="adminAuthView">
+      <div class="form-group" style="max-width: 300px; margin: 0 auto;">
+        <label style="text-align: left;">請輸入管理員密碼：</label>
+        <input type="password" id="adminPassword" placeholder="輸入密碼">
+      </div>
+      <button class="btn-submit" style="max-width: 300px; margin-top: 15px;" onclick="verifyAdmin()">登入</button>
+    </div>
+    <div id="adminDataView">
+      <button onclick="logoutAdmin()" style="margin-bottom: 15px; padding: 8px 15px; border-radius: 6px; border: 1px solid #ccc; cursor: pointer;">登出</button>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>姓名</th><th>班級</th><th>上傳時間</th><th>文件連結</th></tr></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提示與遮罩 -->
+  <div class="modal-overlay" id="customModal">
+    <div class="modal-box">
+      <div class="modal-title" id="modalTitle">訊息</div>
+      <div class="modal-message" id="modalMessage">內容</div>
+      <button class="modal-btn" onclick="closeModal()">確定</button>
+    </div>
+  </div>
+  <div id="loadingOverlay">
+    <div class="spinner"></div><h3 style="color:#555; margin-top:20px;">資料處理中，請稍候...</h3>
+  </div>
+
+  <script>
+    const categories = ["輔助教材呈現", "紀錄學生學習歷程", "促進討論或溝通", "提供適當的練習", "利用資訊搜尋(提問)與彙整", "協助學習任務(作品)創作與分享", "評量後數據利用(學習回饋)"];
+    
+    // 動態產生 radio buttons
+    function generateRadios(containerId, name) {
+      const container = document.getElementById(containerId);
+      categories.forEach(cat => {
+        container.innerHTML += `<label class="radio-label"><input type="radio" name="${name}" value="${cat}"> ${cat}</label>`;
       });
+    }
+    generateRadios('radioGroup1', 'cat1');
+    generateRadios('radioGroup2', 'cat2');
 
-      function getCheckedValues(name) {
-        var checkboxes = document.querySelectorAll('input[name="' + name + '"]:checked');
-        var values = [];
-        checkboxes.forEach((checkbox) => { values.push(checkbox.value); });
-        return values;
+    let API_URL = "";
+    let currentAdminToken = null;
+
+    // 載入 Config API 網址
+    async function loadConfig() {
+      try {
+        const res = await fetch('config.json');
+        const config = await res.json();
+        API_URL = config.API_URL;
+      } catch (e) {
+        showModal('設定錯誤', '無法載入 config.json，請確認檔案存在。', 'error');
       }
+    }
+    window.onload = loadConfig;
 
-      // 【重點功能】圖片壓縮函式 (降低傳輸負擔)
-      function compressImage(file) {
-        return new Promise((resolve, reject) => {
-          if (!file) { resolve(""); return; }
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = () => {
-              const canvas = document.createElement('canvas');
-              let width = img.width, height = img.height;
-              const MAX_WIDTH = 800; // 限制最大寬度
-              if (width > MAX_WIDTH) {
-                height = Math.round((height * MAX_WIDTH) / width);
-                width = MAX_WIDTH;
-              }
-              canvas.width = width; canvas.height = height;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, width, height);
-              // 轉成 jpeg，品質 0.8
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-              resolve(dataUrl.split(',')[1]); // 只回傳 base64 字串部分
-            };
-            img.onerror = () => reject("圖片解析失敗");
-          };
-          reader.onerror = () => reject("檔案讀取失敗");
-        });
+    // 核心 API 呼叫函數
+    async function callAPI(action, payload = {}) {
+      if (!API_URL) throw new Error("API URL 尚未載入");
+      
+      const bodyData = { action: action, ...payload };
+      
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        // 使用 text/plain 避免觸發瀏覽器的 CORS Preflight (OPTIONS) 請求
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+        body: JSON.stringify(bodyData)
+      });
+      return await response.json();
+    }
+
+    // 介面控制
+    function showModal(title, message, type = 'info') {
+      const titleEl = document.getElementById('modalTitle');
+      titleEl.innerText = title; document.getElementById('modalMessage').innerText = message;
+      titleEl.className = 'modal-title ' + (type === 'error' ? 'error' : (type === 'success' ? 'success' : ''));
+      document.getElementById('customModal').classList.add('show');
+    }
+    function closeModal() { document.getElementById('customModal').classList.remove('show'); }
+    function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('show', show); }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+      
+      if (tab === 'upload') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('uploadView').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('adminView').classList.add('active');
+        if (currentAdminToken) {
+          document.getElementById('adminAuthView').style.display = 'none';
+          document.getElementById('adminDataView').style.display = 'block';
+          loadAdminData(currentAdminToken);
+        } else {
+          document.getElementById('adminAuthView').style.display = 'block';
+          document.getElementById('adminDataView').style.display = 'none';
+        }
       }
+    }
 
-      async function submitForm() {
-        if (!API_URL) {
-          alert("API 網址尚未載入，請重新整理頁面。"); return;
+    // 後台驗證與資料載入
+    async function verifyAdmin() {
+      const pwd = document.getElementById('adminPassword').value;
+      if (!pwd) return showModal('錯誤', '請輸入密碼！', 'error');
+      
+      showLoading(true);
+      try {
+        const response = await callAPI('verifyPassword', { password: pwd });
+        if (response.success) {
+          currentAdminToken = pwd;
+          document.getElementById('adminAuthView').style.display = 'none';
+          document.getElementById('adminDataView').style.display = 'block';
+          document.getElementById('adminPassword').value = '';
+          loadAdminData(pwd);
+        } else {
+          showModal('登入失敗', response.message, 'error');
         }
+      } catch (err) {
+        showModal('系統錯誤', 'API 請求失敗', 'error');
+      } finally {
+        showLoading(false);
+      }
+    }
 
-        var statusDiv = document.getElementById('status');
-        var submitBtn = document.getElementById('submitBtn');
-        
-        var className = document.getElementById('className').value;
-        var userName = document.getElementById('userName').value;
-        var fileInput1 = document.getElementById('photo1');
-        var description1 = document.getElementById('description1').value;
-        var checkbox1 = getCheckedValues('checkbox1');
-        var fileInput2 = document.getElementById('photo2');
-        var description2 = document.getElementById('description2').value;
-        var checkbox2 = getCheckedValues('checkbox2');
-        
-        if (!className.trim() || !userName.trim() || fileInput1.files.length === 0 || !description1.trim() || fileInput2.files.length === 0 || !description2.trim()) {
-          statusDiv.innerText = '請確認「班級」、「姓名」已填寫，且兩張照片都已選擇並填妥說明！';
-          statusDiv.style.backgroundColor = '#fce8e6'; statusDiv.style.color = '#d93025'; return;
-        }
+    function logoutAdmin() {
+      currentAdminToken = null;
+      document.getElementById('adminAuthView').style.display = 'block';
+      document.getElementById('adminDataView').style.display = 'none';
+      document.getElementById('adminTableBody').innerHTML = '';
+    }
 
-        submitBtn.disabled = true;
-        submitBtn.innerText = '上傳處理中...';
-        statusDiv.innerText = '正在壓縮圖片並準備上傳，請稍候...';
-        statusDiv.style.backgroundColor = '#FCFAFF'; statusDiv.style.color = '#7579B0'; statusDiv.style.border = '1px solid #7579B0';
-
-        try {
-          // 等待圖片壓縮完成
-          const base64Photo1 = await compressImage(fileInput1.files[0]);
-          const base64Photo2 = await compressImage(fileInput2.files[0]);
-
-          var data = {
-            className: className, userName: userName,
-            photo1Data: base64Photo1, description1: description1, checkbox1: checkbox1,
-            photo2Data: base64Photo2, description2: description2, checkbox2: checkbox2
-          };
-          
-          statusDiv.innerText = '正在與伺服器連線儲存資料與生成文件，請勿關閉視窗...';
-
-          // 使用最基礎的 fetch 寫法避免 CORS 預檢
-          const response = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify(data)
-          });
-          
-          const result = await response.json();
-          
-          statusDiv.innerText = result.message;
-          submitBtn.disabled = false;
-          submitBtn.innerText = '確認上傳';
-          
-          if(result.success) {
-            statusDiv.style.backgroundColor = '#e6f4ea'; statusDiv.style.color = '#188038'; statusDiv.style.border = 'none';
-            document.getElementById('uploadForm').reset();
-          } else {
-            statusDiv.style.backgroundColor = '#fce8e6'; statusDiv.style.color = '#d93025'; statusDiv.style.border = 'none';
+    async function loadAdminData(password) {
+      const tbody = document.getElementById('adminTableBody');
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">載入中...</td></tr>';
+      try {
+        const response = await callAPI('getAdminData', { password: password });
+        if (response.success) {
+          if (response.data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">目前尚無資料</td></tr>';
+            return;
           }
-
-        } catch (error) {
-          statusDiv.innerText = "網路連線發生錯誤，請確認網路環境或重試。\n" + error;
-          statusDiv.style.backgroundColor = '#fce8e6'; statusDiv.style.color = '#d93025'; statusDiv.style.border = 'none';
-          submitBtn.disabled = false; submitBtn.innerText = '確認上傳';
+          tbody.innerHTML = response.data.map(row => `
+            <tr>
+              <td>${row.name}</td><td>${row.className}</td><td>${row.timestamp}</td>
+              <td><a href="${row.docUrl}" target="_blank" class="doc-link">檢視文件</a></td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = `<tr><td colspan="4" style="color:red;">載入失敗：${response.message}</td></tr>`;
+          logoutAdmin();
         }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="4" style="color:red;">系統錯誤</td></tr>`;
       }
-    </script>
-  </body>
+    }
+
+    // 表單處理
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800; 
+            let width = img.width, height = img.height;
+            if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+            canvas.width = width; canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.8));
+          };
+          img.onerror = reject; img.src = e.target.result;
+        };
+        reader.onerror = reject; reader.readAsDataURL(file);
+      });
+    }
+
+    async function submitForm() {
+      const name = document.getElementById('studentName').value.trim();
+      const className = document.getElementById('className').value;
+      const file1 = document.getElementById('file1').files[0];
+      const desc1 = document.getElementById('desc1').value.trim();
+      const cat1Node = document.querySelector('input[name="cat1"]:checked');
+      const file2 = document.getElementById('file2').files[0];
+      const desc2 = document.getElementById('desc2').value.trim();
+      const cat2Node = document.querySelector('input[name="cat2"]:checked');
+
+      if (!name || !className) return showModal('資料不完整', '請填寫姓名與班級！', 'error');
+      if (!file1 || !file2) return showModal('資料不完整', '請務必上傳兩張照片！', 'error');
+      if (!desc1 || !desc2) return showModal('資料不完整', '請填寫兩張照片的說明！', 'error');
+      if (!cat1Node || !cat2Node) return showModal('資料不完整', '請為兩張照片勾選應用類別！', 'error');
+
+      showLoading(true);
+      try {
+        const payload = {
+          name: name, className: className,
+          photo1: await compressImage(file1), desc1: desc1, cat1: cat1Node.value,
+          photo2: await compressImage(file2), desc2: desc2, cat2: cat2Node.value
+        };
+
+        const response = await callAPI('saveData', payload);
+        if (response.success) {
+          showModal('上傳成功', response.message, 'success');
+          resetForm();
+        } else {
+          showModal('上傳失敗', response.message, 'error');
+        }
+      } catch (error) {
+        showModal('處理錯誤', '發生網路或系統錯誤。', 'error');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('studentName').value = '';
+      document.getElementById('className').value = '';
+      document.getElementById('file1').value = ''; document.getElementById('desc1').value = '';
+      document.getElementById('file2').value = ''; document.getElementById('desc2').value = '';
+      document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+    }
+  </script>
+</body>
 </html>
