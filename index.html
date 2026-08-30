@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寶桑國小資訊成果上傳系統</title>
+    <style>
+      body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        /* 修改背景為指定的漸層色 */
+        background: linear-gradient(to bottom, #E6DEE9, #BDC2E8); 
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px; 
+        color: #333; 
+      }
+      .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+      
+      /* 標題改為搭配背景的紫藍色 */
+      h2 { text-align: center; color: #7579B0; margin-bottom: 30px; }
+      
+      /* 區塊背景與邊框微調，帶點柔和的淡紫白 */
+      .section-box { border: 1px solid #D3CEDB; padding: 20px; border-radius: 8px; margin-bottom: 25px; background-color: #FCFAFF; }
+      .section-box h3 { margin-top: 0; color: #5B5A7A; border-bottom: 2px solid #D3CEDB; padding-bottom: 10px; }
+      
+      .form-group { margin-bottom: 15px; }
+      label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+      
+      /* 輸入框邊框改為淡紫灰色，並加入 focus 效果 */
+      input[type="text"], input[type="file"], textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #C4C0D0; border-radius: 6px; font-family: inherit; transition: all 0.3s ease; }
+      input[type="text"]:focus, input[type="file"]:focus, textarea:focus { outline: none; border-color: #7579B0; box-shadow: 0 0 0 3px rgba(117, 121, 176, 0.15); }
+      textarea { resize: vertical; }
+      
+      .checkbox-group { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 6px; border: 1px solid #C4C0D0; }
+      .checkbox-item { display: flex; align-items: flex-start; }
+      
+      /* 勾選框顏色配合主題 */
+      .checkbox-item input[type="checkbox"] { margin-top: 4px; margin-right: 10px; accent-color: #7579B0; }
+      .checkbox-item label { font-weight: normal; margin-bottom: 0; cursor: pointer; }
+      
+      /* 按鈕改為紫藍色系 */
+      button { width: 100%; padding: 14px; background-color: #7579B0; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 10px; }
+      button:hover { background-color: #5A5D8A; }
+      button:disabled { background-color: #B0B3CD; cursor: not-allowed; }
+      
+      #status { margin-top: 20px; font-weight: bold; text-align: center; font-size: 16px; padding: 10px; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>寶桑國小資訊成果資料上傳系統</h2>
+      <form id="uploadForm">
+        
+        <div class="section-box">
+          <h3>基本資料</h3>
+          <div class="form-group">
+            <label for="className">班級：</label>
+            <input type="text" id="className" name="className" placeholder="例如：一年甲班" required>
+          </div>
+          <div class="form-group">
+            <label for="userName">姓名：</label>
+            <input type="text" id="userName" name="userName" placeholder="請輸入您的姓名" required>
+          </div>
+        </div>
+
+        <div class="section-box">
+          <h3>第 1 張照片</h3>
+          <div class="form-group">
+            <label for="photo1">選擇照片：</label>
+            <input type="file" id="photo1" accept="image/*" required>
+          </div>
+          <div class="form-group">
+            <label for="description1">照片說明：</label>
+            <textarea id="description1" name="description1" rows="3" placeholder="請輸入關於這張照片的教學年級、教學領域、教學單元、應用軟體、應用說明..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label>「數位科技輔助教學活動」應用類別：</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item"><input type="checkbox" id="cb1_1" name="checkbox1" value="輔助教材呈現"><label for="cb1_1">輔助教材呈現</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_2" name="checkbox1" value="紀錄學生學習歷程"><label for="cb1_2">紀錄學生學習歷程</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_3" name="checkbox1" value="促進討論或溝通"><label for="cb1_3">促進討論或溝通</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_4" name="checkbox1" value="提供適當的練習"><label for="cb1_4">提供適當的練習</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_5" name="checkbox1" value="利用資訊搜尋(提問)與彙整"><label for="cb1_5">利用資訊搜尋(提問)與彙整</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_6" name="checkbox1" value="協助學習任務(作品)創作與分享"><label for="cb1_6">協助學習任務(作品)創作與分享</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb1_7" name="checkbox1" value="評量後數據利用(學習回饋)"><label for="cb1_7">評量後數據利用(學習回饋)</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-box">
+          <h3>第 2 張照片</h3>
+          <div class="form-group">
+            <label for="photo2">選擇照片：</label>
+            <input type="file" id="photo2" accept="image/*" required>
+          </div>
+          <div class="form-group">
+            <label for="description2">照片說明：</label>
+            <textarea id="description2" name="description2" rows="3" placeholder="請輸入關於這張照片的教學年級、教學領域、教學單元、應用軟體、應用說明..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label>「數位科技輔助教學活動」應用類別：</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item"><input type="checkbox" id="cb2_1" name="checkbox2" value="輔助教材呈現"><label for="cb2_1">輔助教材呈現</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_2" name="checkbox2" value="紀錄學生學習歷程"><label for="cb2_2">紀錄學生學習歷程</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_3" name="checkbox2" value="促進討論或溝通"><label for="cb2_3">促進討論或溝通</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_4" name="checkbox2" value="提供適當的練習"><label for="cb2_4">提供適當的練習</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_5" name="checkbox2" value="利用資訊搜尋(提問)與彙整"><label for="cb2_5">利用資訊搜尋(提問)與彙整</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_6" name="checkbox2" value="協助學習任務(作品)創作與分享"><label for="cb2_6">協助學習任務(作品)創作與分享</label></div>
+              <div class="checkbox-item"><input type="checkbox" id="cb2_7" name="checkbox2" value="評量後數據利用(學習回饋)"><label for="cb2_7">評量後數據利用(學習回饋)</label></div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="submitBtn" onclick="submitForm()">確認上傳</button>
+      </form>
+      <div id="status"></div>
+    </div>
+
+    <script>
+      function getCheckedValues(name) {
+        var checkboxes = document.querySelectorAll('input[name="' + name + '"]:checked');
+        var values = [];
+        checkboxes.forEach((checkbox) => { values.push(checkbox.value); });
+        return values;
+      }
+
+      function submitForm() {
+        var statusDiv = document.getElementById('status');
+        var submitBtn = document.getElementById('submitBtn');
+        
+        var className = document.getElementById('className').value;
+        var userName = document.getElementById('userName').value;
+        
+        var fileInput1 = document.getElementById('photo1');
+        var description1 = document.getElementById('description1').value;
+        var checkbox1 = getCheckedValues('checkbox1');
+        
+        var fileInput2 = document.getElementById('photo2');
+        var description2 = document.getElementById('description2').value;
+        var checkbox2 = getCheckedValues('checkbox2');
+        
+        // 檢查包含班級、姓名在內的所有必填欄位
+        if (!className.trim() || !userName.trim() || fileInput1.files.length === 0 || !description1.trim() || fileInput2.files.length === 0 || !description2.trim()) {
+          statusDiv.innerText = '請確認「班級」、「姓名」已填寫，且兩張照片都已選擇並填妥說明！';
+          statusDiv.style.backgroundColor = '#fce8e6';
+          statusDiv.style.color = '#d93025';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = '上傳處理中...';
+        statusDiv.innerText = '資料上傳中，請勿關閉視窗...';
+        statusDiv.style.backgroundColor = '#FCFAFF';
+        statusDiv.style.color = '#7579B0';
+        statusDiv.style.border = '1px solid #7579B0';
+
+        var reader1 = new FileReader();
+        var reader2 = new FileReader();
+
+        reader1.onload = function(e1) {
+          reader2.onload = function(e2) {
+            var data = {
+              className: className,
+              userName: userName,
+              
+              photo1Name: fileInput1.files[0].name,
+              photo1Mime: fileInput1.files[0].type,
+              photo1Data: e1.target.result.split(',')[1],
+              description1: description1,
+              checkbox1: checkbox1,
+
+              photo2Name: fileInput2.files[0].name,
+              photo2Mime: fileInput2.files[0].type,
+              photo2Data: e2.target.result.split(',')[1],
+              description2: description2,
+              checkbox2: checkbox2
+            };
+            
+            google.script.run.withSuccessHandler(function(response) {
+              statusDiv.innerText = response;
+              submitBtn.disabled = false;
+              submitBtn.innerText = '確認上傳';
+              
+              if(response === '上傳成功！') {
+                statusDiv.style.backgroundColor = '#e6f4ea';
+                statusDiv.style.color = '#188038';
+                statusDiv.style.border = 'none';
+                document.getElementById('uploadForm').reset();
+              } else {
+                statusDiv.style.backgroundColor = '#fce8e6';
+                statusDiv.style.color = '#d93025';
+                statusDiv.style.border = 'none';
+              }
+            }).uploadData(data);
+          };
+          reader2.readAsDataURL(fileInput2.files[0]);
+        };
+        reader1.readAsDataURL(fileInput1.files[0]);
+      }
+    </script>
+  </body>
+</html>
